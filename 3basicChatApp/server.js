@@ -11,8 +11,17 @@ const server = app.listen(8081, () => {
   console.log("listnint on http://localhost:8081");
 });
 
-const io = socketIO(server);
+const io = socketIO(server, {
+  cors: {
+    origin: "*",
+  },
+});
 
 io.on("connection", (socket) => {
   console.log("connected");
+
+  socket.on("msg", (msg) => {
+    io.emit("message", msg);
+    console.log(msg);
+  });
 });
